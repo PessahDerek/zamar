@@ -1,0 +1,87 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
+
+@layer theme, base, components, utilities;
+
+@theme {
+    --color-*: initial;
+    --color-white: #fff;
+    --color-bg: #F1F2F9;
+
+    --color-primary: oklch(40.353% 0.13365 279.64);
+    --color-primary-50: oklch(84.815% 0.04656 299.25);
+    --color-primary-100: oklch(79.725% 0.06139 297.77);
+    --color-primary-200: oklch(69.282% 0.09363 293.85);
+    --color-primary-300: oklch(58.462% 0.12759 288.84);
+    --color-primary-400: oklch(47.678% 0.1595 282.41);
+    --color-primary-500: oklch(40.353% 0.13365 279.64);
+    --color-primary-600: oklch(35.161% 0.10668 277.35);
+    --color-primary-700: oklch(29.774% 0.07899 275.64);
+    --color-primary-800: oklch(24.033% 0.05236 272.46);
+    --color-primary-900: oklch(17.087% 0.02598 269.44);
+    --color-primary-950: oklch(12.835% 0.01287 263.62);
+
+    --color-secondary: oklch(73.072% 0.18475 51.695);
+    --color-secondary-50: oklch(99.393% 0.00818 91.48);
+    --color-secondary-100: oklch(97.363% 0.03408 90.503);
+    --color-secondary-200: oklch(92.356% 0.07838 83.585);
+    --color-secondary-300: oklch(86.52% 0.11701 75.843);
+    --color-secondary-400: oklch(79.906% 0.15135 65.269);
+    --color-secondary-500: oklch(73.072% 0.18475 51.695);
+    --color-secondary-600: oklch(64.484% 0.19006 43.271);
+    --color-secondary-700: oklch(54.396% 0.17273 39.429);
+    --color-secondary-800: oklch(44.681% 0.15248 36.155);
+    --color-secondary-900: oklch(35.015% 0.12501 34.288);
+    --color-secondary-950: oklch(30.048% 0.10843 33.861);
+
+    --color-accent: oklch(58.404% 0.21024 13.721);
+    --color-accent-50: oklch(95.986% 0.01525 22.397);
+    --color-accent-100: oklch(90.882% 0.0357 17.827);
+    --color-accent-200: oklch(81.034% 0.08135 16.137);
+    --color-accent-300: oklch(71.972% 0.13049 13.705);
+    --color-accent-400: oklch(64.179% 0.17555 12.896);
+    --color-accent-500: oklch(58.404% 0.21024 13.721);
+    --color-accent-600: oklch(52.207% 0.18973 9.5586);
+    --color-accent-700: oklch(45.229% 0.16327 4.7775);
+    --color-accent-800: oklch(37.931% 0.13576 359.38);
+    --color-accent-900: oklch(30.136% 0.10531 354.73);
+    --color-accent-950: oklch(25.961% 0.08858 351.08);
+
+    --color-neutral: oklch(99.703% 0 none);
+    --color-neutral-default: oklch(99.703% 0 none);
+    --color-neutral-50: oklch(100% 0 none);
+    --color-neutral-100: oklch(100% 0 none);
+    --color-neutral-200: oklch(100% 0 none);
+    --color-neutral-300: oklch(100% 0 none);
+    --color-neutral-400: oklch(100% 0 none);
+    --color-neutral-500: oklch(99.703% 0 none);
+    --color-neutral-600: oklch(93.705% 0 none);
+    --color-neutral-700: oklch(87.302% 0 none);
+    --color-neutral-800: oklch(81.093% 0 none);
+    --color-neutral-900: oklch(74.443% 0 none);
+    --color-neutral-950: oklch(71.224% 0 none);
+
+    --color-black: oklch(8.4673% 0 none);
+    --color-black-50: oklch(56.241% 0 none);
+    --color-black-100: oklch(51.73% 0 none);
+    --color-black-200: oklch(42.761% 0 none);
+    --color-black-300: oklch(32.897% 0 none);
+    --color-black-400: oklch(22.645% 0 none);
+    --color-black-500: oklch(8.4673% 0 none);
+    --color-black-600: oklch(0% 0 none);
+    --color-black-700: oklch(0% 0 none);
+    --color-black-800: oklch(0% 0 none);
+    --color-black-900: oklch(0% 0 none);
+    --color-black-950: oklch(0% 0 none);
+}
+
+* {
+    margin: 0;
+    position: relative;
+    border: transparent;
+    outline: transparent;
+}
+html, body {
+    @apply bg-[#F1F2F9];
+}
