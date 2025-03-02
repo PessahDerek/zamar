@@ -8,20 +8,12 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as ProjectsImport } from './routes/projects'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
-import { Route as ProjectslayoutImport } from './routes/projects/__layout'
-import { Route as ProjectslayoutIndexImport } from './routes/projects/__layout/index'
-import { Route as ProjectslayoutBrandActivationImport } from './routes/projects/__layout/brand-activation'
-
-// Create Virtual Routes
-
-const ProjectsImport = createFileRoute('/projects')()
 
 // Create/Update Routes
 
@@ -42,24 +34,6 @@ const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
-
-const ProjectslayoutRoute = ProjectslayoutImport.update({
-  id: '/__layout',
-  getParentRoute: () => ProjectsRoute,
-} as any)
-
-const ProjectslayoutIndexRoute = ProjectslayoutIndexImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => ProjectslayoutRoute,
-} as any)
-
-const ProjectslayoutBrandActivationRoute =
-  ProjectslayoutBrandActivationImport.update({
-    id: '/brand-activation',
-    path: '/brand-activation',
-    getParentRoute: () => ProjectslayoutRoute,
-  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -86,114 +60,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsImport
       parentRoute: typeof rootRoute
     }
-    '/projects/__layout': {
-      id: '/projects/__layout'
-      path: '/projects'
-      fullPath: '/projects'
-      preLoaderRoute: typeof ProjectslayoutImport
-      parentRoute: typeof ProjectsRoute
-    }
-    '/projects/__layout/brand-activation': {
-      id: '/projects/__layout/brand-activation'
-      path: '/brand-activation'
-      fullPath: '/projects/brand-activation'
-      preLoaderRoute: typeof ProjectslayoutBrandActivationImport
-      parentRoute: typeof ProjectslayoutImport
-    }
-    '/projects/__layout/': {
-      id: '/projects/__layout/'
-      path: '/'
-      fullPath: '/projects/'
-      preLoaderRoute: typeof ProjectslayoutIndexImport
-      parentRoute: typeof ProjectslayoutImport
-    }
   }
 }
 
 // Create and export the route tree
 
-interface ProjectslayoutRouteChildren {
-  ProjectslayoutBrandActivationRoute: typeof ProjectslayoutBrandActivationRoute
-  ProjectslayoutIndexRoute: typeof ProjectslayoutIndexRoute
-}
-
-const ProjectslayoutRouteChildren: ProjectslayoutRouteChildren = {
-  ProjectslayoutBrandActivationRoute: ProjectslayoutBrandActivationRoute,
-  ProjectslayoutIndexRoute: ProjectslayoutIndexRoute,
-}
-
-const ProjectslayoutRouteWithChildren = ProjectslayoutRoute._addFileChildren(
-  ProjectslayoutRouteChildren,
-)
-
-interface ProjectsRouteChildren {
-  ProjectslayoutRoute: typeof ProjectslayoutRouteWithChildren
-}
-
-const ProjectsRouteChildren: ProjectsRouteChildren = {
-  ProjectslayoutRoute: ProjectslayoutRouteWithChildren,
-}
-
-const ProjectsRouteWithChildren = ProjectsRoute._addFileChildren(
-  ProjectsRouteChildren,
-)
-
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/projects': typeof ProjectslayoutRouteWithChildren
-  '/projects/brand-activation': typeof ProjectslayoutBrandActivationRoute
-  '/projects/': typeof ProjectslayoutIndexRoute
+  '/projects': typeof ProjectsRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/projects': typeof ProjectslayoutIndexRoute
-  '/projects/brand-activation': typeof ProjectslayoutBrandActivationRoute
+  '/projects': typeof ProjectsRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/projects': typeof ProjectsRouteWithChildren
-  '/projects/__layout': typeof ProjectslayoutRouteWithChildren
-  '/projects/__layout/brand-activation': typeof ProjectslayoutBrandActivationRoute
-  '/projects/__layout/': typeof ProjectslayoutIndexRoute
+  '/projects': typeof ProjectsRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/about'
-    | '/projects'
-    | '/projects/brand-activation'
-    | '/projects/'
+  fullPaths: '/' | '/about' | '/projects'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/projects' | '/projects/brand-activation'
-  id:
-    | '__root__'
-    | '/'
-    | '/about'
-    | '/projects'
-    | '/projects/__layout'
-    | '/projects/__layout/brand-activation'
-    | '/projects/__layout/'
+  to: '/' | '/about' | '/projects'
+  id: '__root__' | '/' | '/about' | '/projects'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  ProjectsRoute: typeof ProjectsRouteWithChildren
+  ProjectsRoute: typeof ProjectsRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  ProjectsRoute: ProjectsRouteWithChildren,
+  ProjectsRoute: ProjectsRoute,
 }
 
 export const routeTree = rootRoute
@@ -218,26 +127,7 @@ export const routeTree = rootRoute
       "filePath": "about.tsx"
     },
     "/projects": {
-      "filePath": "projects",
-      "children": [
-        "/projects/__layout"
-      ]
-    },
-    "/projects/__layout": {
-      "filePath": "projects/__layout.tsx",
-      "parent": "/projects",
-      "children": [
-        "/projects/__layout/brand-activation",
-        "/projects/__layout/"
-      ]
-    },
-    "/projects/__layout/brand-activation": {
-      "filePath": "projects/__layout/brand-activation.tsx",
-      "parent": "/projects/__layout"
-    },
-    "/projects/__layout/": {
-      "filePath": "projects/__layout/index.tsx",
-      "parent": "/projects/__layout"
+      "filePath": "projects.tsx"
     }
   }
 }

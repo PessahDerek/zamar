@@ -45,3 +45,26 @@ declare interface ProjectGroupObj {
     "title": string
     "updated": string;
 }
+
+// Define the project type
+declare interface ProjectObj {
+    caption: string;
+    category: string;
+    collectionId: string;
+    collectionName: string;
+    created: string;
+    id: string;
+    images: string[];
+    title: string;
+    updated: string;
+}
+
+// If you're using this as part of a response type from an API
+interface ProjectResponse {
+    data: Project;
+}
+
+// Or if it's part of an array of projects
+interface ProjectsResponse {
+    data: Project[];
+}

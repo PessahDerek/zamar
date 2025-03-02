@@ -1,19 +1,23 @@
-import {Link, useLocation} from "@tanstack/react-router";
-import {NavPathObj} from "../../libs/content/static.content";
+import {Link, LinkProps} from "@tanstack/react-router";
 import {Text} from "@mantine/core";
 
+interface props extends LinkProps {
+    label: string;
+}
 
-export default function NavBtn({label, to}: NavPathObj) {
-    const {pathname} = useLocation()
-    const active = to === "/" ? pathname === to : pathname.includes(to)
+export default function NavBtn({label, to, ...rest}: props) {
 
     return (
-        <Link to={to} className={""}>
-            <div
-                className={`w-max h-full grid px-5 border-b-4 transition-all duration-700 border-b-solid border-transparent ${active ? "border-b-primary" : ""}`}>
-                <Text className={`${active ? "text-primary-400":""} m-auto`}>{label}</Text>
-            </div>
+        <Link to={to} {...rest} className={""} activeOptions={{includeSearch: false}}>
+            {({isActive}) => {
+                return (
+                    <div
+                        className={`w-max h-full grid px-5 border-b-4 transition-all duration-700 border-b-solid border-transparent ${isActive ? "border-b-primary" : ""}`}>
+                        <Text className={`${isActive ? "text-primary-400" : ""} m-auto`}>{label}</Text>
+                    </div>
+                )
+            }}
         </Link>
-    )
+    );
 }
 
