@@ -2,39 +2,53 @@ import * as React from 'react'
 import {useEffect} from 'react'
 import {createRootRoute, Outlet, useLoaderData} from '@tanstack/react-router'
 import MainNavBar from "../components/navigations/main-nav-bar";
-import api from "../libs/network/axios";
 import {useStore} from "zustand/react";
 import DynamicContentStore from "../libs/content/dynamic.content";
-import {fakeLeaders, fakeReviews} from "../libs/fake/data.fake";
+import {fakeLeaders} from "../libs/fake/data.fake";
 import Footer from "../components/ui/Footer";
+import pb from "../libs/instances/pocketbase";
 
 export const Route = createRootRoute({
     component: RootComponent,
+    preload: true,
 
     loader: async () => {
-        const values = (await api.get("/values")).data
-        const services = (await api.get("/services")).data
-        const reviews = fakeReviews
+        const showcase = (await pb.collection("Showcase").getList()).items as unknown as ShowcaseObj[]
+        const values = (await pb.collection("values").getList()).items as unknown as ValueObj[]
+        const services = (await pb.collection("services").getList()).items as unknown as ServicesObj[]
+        const testimonials = (await pb.collection("Testimonials").getList()).items as unknown as TestimonialObj[]
+        const clients = (await pb.collection('Clients').getList()).items as unknown as RawClientObj[]
         const leaders = fakeLeaders
-        return Promise.resolve({values, services, reviews, leaders})
+        return Promise.resolve({showcase, clients, values, services, testimonials, leaders})
     }
 })
 
 function RootComponent() {
-    const {values, services, reviews, leaders} = useLoaderData({from: "__root__"})
+    const {showcase, clients, values, services, testimonials, leaders} = useLoaderData({from: "__root__"})
     const {fill} = useStore(DynamicContentStore)
 
     useEffect(() => {
         if (Array.isArray(values)) {
-            fill("values", values.sort((a, b) => b.text.length - a.text.length))
+            fill("values", values.sort((a, b) => b.description.length - a.description.length))
         }
+        console.log("Services: ", services)
         if (Array.isArray(services)) {
             fill("services", services)
         }
-        if (Array.isArray(reviews))
-            fill("reviews", reviews)
+        if (Array.isArray(testimonials))
+            fill("testimonials", testimonials)
         if (Array.isArray(leaders))
             fill("leaders", leaders)
+        if (Array.isArray(showcase))
+            fill("showcase", showcase)
+        if (Array.isArray(clients))
+            // !important modified the incoming ID to genId to be able to have different ID since they are kept in a map
+            fill("clients", clients.flatMap(c => c.field.map(f => ({
+                ...c,
+                image: f,
+                id: (c.id + Math.random() * 100),
+                genId: c.id
+            }))))
     }, []);
 
 

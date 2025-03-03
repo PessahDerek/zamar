@@ -18,10 +18,12 @@ export const Route = createFileRoute('/')({
 })
 
 function HomeComponent() {
-    const {values, services, reviews} = useStore(DynamicContentStore)
+    const {values, services, testimonials} = useStore(DynamicContentStore)
 
+
+    console.log([...services.values()])
     return (
-        <div className="w-full h-full">
+        <div className="w-full">
             <Landing/>
             <Space h={20}/>
             <div className={"w-[95%] grid gap-4 m-auto"}>
@@ -31,27 +33,32 @@ function HomeComponent() {
                 </Flex>
             </div>
             <Space h={40}/>
-            <div className={"w-[95%] grid gap-4 m-auto"}>
+            <div className={"w-[95%] h-max grid auto-rows-max gap-4 m-auto"}>
                 <Title order={2} className={"font-black text-primary-700 text-5xl"}>Our services</Title>
-                <Flex wrap={'wrap'} gap={4}>
+                <div className={"w-full flex gap-2 flex-wrap"}>
                     {[...services.values()].map(service =>
                         <ServiceCard service={service} key={service.id}/>)}
-                </Flex>
+                </div>
             </div>
             <Space h={40}/>
             <div className={"w-[95%] grid gap-4 m-auto"}>
                 <Title order={2} className={"font-black text-primary-700 text-5xl"}>What our clients say</Title>
-                <Carousel classNames={{
-                    indicator: "bg-accent", container: " pb-10",
-                    indicators: " h-2 bottom-0"
-                }} withIndicators={true} align={'start'} slideSize={"35%"} slideGap={10}>
+                <Carousel
+                    classNames={{
+                        indicator: "bg-accent", container: " pb-10",
+                        indicators: " h-2 bottom-0"
+                    }} withIndicators={true}
+                    align={'start'}
+                    slideSize={{md: "35%"}} slideGap={10}
+                >
                     {
-                        [...reviews.values()].map(review => <Carousel.Slide key={review.id}>
-                            <ReviewCard review={review}/>
-                        </Carousel.Slide>)
+                        [...testimonials.values()].map(review =>
+                            <Carousel.Slide key={review.id}>
+                                <ReviewCard review={review}/>
+                            </Carousel.Slide>)
                     }
                 </Carousel>
-                <Link className={"m-auto"} to={"/about"}>
+                <Link className={"m-auto"} to={"/quote"}>
                     <Button variant={'gradient'}>Get free quote</Button>
                 </Link>
             </div>
@@ -63,10 +70,13 @@ function HomeComponent() {
                 <div className={"flex flex-wrap gap-4"}>
                     <SendEmailMessage className={'max-w-1/2 flex-1'}/>
                     <div className={"grid auto-rows-max gap-3 bg-white p-4 rounded-md"}>
-                        <ContactLink color={'green'} contact={"0741120439"} label={"Whatsapp"} href={""} icon={BsWhatsapp} />
-                        <ContactLink color={'blue'} contact={"0741120439"} label={"Phone"} href={""} icon={BsPhone} />
-                        <ContactLink color={'primary'} contact={"@zamar_ltd"} label={"Twitter (X)"} href={""} icon={BsTwitterX} />
-                        <ContactLink color={'secondary'} contact={"@zamar_ltd"} label={"Instagram"} href={""} icon={BsInstagram} />
+                        <ContactLink color={'green'} contact={"0741120439"} label={"Whatsapp"} href={""}
+                                     icon={BsWhatsapp}/>
+                        <ContactLink color={'blue'} contact={"0741120439"} label={"Phone"} href={""} icon={BsPhone}/>
+                        <ContactLink color={'primary'} contact={"@zamar_ltd"} label={"Twitter (X)"} href={""}
+                                     icon={BsTwitterX}/>
+                        <ContactLink color={'secondary'} contact={"@zamar_ltd"} label={"Instagram"} href={""}
+                                     icon={BsInstagram}/>
                     </div>
                 </div>
             </div>

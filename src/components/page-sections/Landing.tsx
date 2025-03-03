@@ -6,10 +6,11 @@ import {Link} from "@tanstack/react-router";
 import {useRef} from "react";
 import AutoScroll from "embla-carousel-auto-scroll";
 import Autoplay from "embla-carousel-autoplay";
+import pb from "../../libs/instances/pocketbase";
 
 export default function Landing() {
-    const {texts} = useStore(DynamicContentStore)
-    const autoplay1 = useRef(Autoplay({delay: 4000}))
+    const {texts, showcase, clients} = useStore(DynamicContentStore)
+    const autoplay1 = useRef(Autoplay({delay: 7000}))
     const autoplay2 = useRef(AutoScroll({}))
 
 
@@ -21,20 +22,14 @@ export default function Landing() {
                 className={"w-full h-[calc(100vh-70px)] absolute top-0 left-0 "}
                 plugins={[autoplay1.current]}
             >
-                <Carousel.Slide className={"w-full h-[calc(100vh-70px)] bg-black"}>
-                    <Image
-                        src={"/ui/landing.jpg"}
-                        alt={"sample work done by Zamar"}
-                        className={"w-full h-full object-cover filter"}
-                    />
-                </Carousel.Slide>
-                <Carousel.Slide className={"w-full h-[calc(100vh-70px)] bg-black"}>
-                    <Image
-                        src={"/ui/landing.jpg"}
-                        alt={"sample work done by Zamar"}
-                        className={"w-full h-full object-cover filter"}
-                    />
-                </Carousel.Slide>
+                {[...showcase.values()].map(show =>
+                    <Carousel.Slide key={show.id} className={"w-full overflow-hidden h-[calc(100vh-70px)] bg-black"}>
+                        <Image
+                            src={`${pb.baseURL}/api/files/${show.collectionId}/${show.id}/${show.image}`}
+                            alt={"sample work done by Zamar"}
+                            className={"w-full h-full object-cover animate-zoom"}
+                        />
+                    </Carousel.Slide>)}
             </Carousel>
             <div className={"w-full h-full text-white flex flex-col bg-gradient-to-tr from-primary-900 to-transparent"}>
                 <Flex
@@ -42,13 +37,8 @@ export default function Landing() {
                     <div className={"grid gap-2 mt-auto mb-10 w-3/4"}>
                         <Title className={"font-black"} size={"4rem"}
                                order={1}>{texts.get("landing_title") ?? ""}</Title>
-                        <Text>If supplied, this function will be called with the route match and the return value will
-                            be
-                            returned from useParams. This value will also be used to determine if the hook should
-                            re-render
-                            its
-                            parent component using shallow equality checks.</Text>
-                        <Link to={"/"}>
+                        <Text>fadf</Text>
+                        <Link to={"/quote"}>
                             <Button variant={'gradient'}>
                                 Get free quote
                             </Button>
@@ -61,68 +51,22 @@ export default function Landing() {
                     h={'15vh'} slideGap={5}
                     speed={50}
                     loop={true} align={'start'}
-                    slideSize={"10%"} withControls={false}
+                    slideSize={{md: "10%", sm: "20%"}} withControls={false}
                     withIndicators={false}
                     className={"w-full"}
                 >
-                    <Carousel.Slide className={""}>
-                        <Card color={'white'} className={"w-full h-[15vh]"}>
-                            <Image src={"/clients/client1.png"} className={"w-full h-full object-contain"}/>
-                        </Card>
-                    </Carousel.Slide>
-                    <Carousel.Slide className={""}>
-                        <Card color={'white'} className={"w-full h-[15vh]"}>
-                            <Image src={"/clients/client1.png"} className={"w-full h-full object-contain"}/>
-                        </Card>
-                    </Carousel.Slide>
-                    <Carousel.Slide className={""}>
-                        <Card color={'white'} className={"w-full h-[15vh]"}>
-                            <Image src={"/clients/client1.png"} className={"w-full h-full object-contain"}/>
-                        </Card>
-                    </Carousel.Slide>
-                    <Carousel.Slide className={""}>
-                        <Card color={'white'} className={"w-full h-[15vh]"}>
-                            <Image src={"/clients/client1.png"} className={"w-full h-full object-contain"}/>
-                        </Card>
-                    </Carousel.Slide>
-                    <Carousel.Slide className={""}>
-                        <Card color={'white'} className={"w-full h-[15vh]"}>
-                            <Image src={"/clients/client1.png"} className={"w-full h-full object-contain"}/>
-                        </Card>
-                    </Carousel.Slide>
-                    <Carousel.Slide className={""}>
-                        <Card color={'white'} className={"w-full h-[15vh]"}>
-                            <Image src={"/clients/client1.png"} className={"w-full h-full object-contain"}/>
-                        </Card>
-                    </Carousel.Slide>
-                    <Carousel.Slide className={""}>
-                        <Card color={'white'} className={"w-full h-[15vh]"}>
-                            <Image src={"/clients/client1.png"} className={"w-full h-full object-contain"}/>
-                        </Card>
-                    </Carousel.Slide>
-                    <Carousel.Slide className={""}>
-                        <Card color={'white'} className={"w-full h-[15vh]"}>
-                            <Image src={"/clients/client1.png"} className={"w-full h-full object-contain"}/>
-                        </Card>
-                    </Carousel.Slide>
-                    <Carousel.Slide className={""}>
-                        <Card color={'white'} className={"w-full h-[15vh]"}>
-                            <Image src={"/clients/client1.png"} className={"w-full h-full object-contain"}/>
-                        </Card>
-                    </Carousel.Slide>
-                    <Carousel.Slide className={""}>
-                        <Card color={'white'} className={"w-full h-[15vh]"}>
-                            <Image src={"/clients/client1.png"} className={"w-full h-full object-contain"}/>
-                        </Card>
-                    </Carousel.Slide>
-                    <Carousel.Slide className={""}>
-                        <Card color={'white'} className={"w-full h-[15vh]"}>
-                            <Image src={"/clients/client1.png"} className={"w-full h-full object-contain"}/>
-                        </Card>
-                    </Carousel.Slide>
+                    {[...clients.values()].map((v, i) =>
+                        <Carousel.Slide key={i} className={""}>
+                            <Card color={'white'} className={"w-full h-[15vh]"}>
+                                <Image
+                                    src={`${pb.baseURL}/api/files/${v.collectionId}/${v.genId}/${v.image}`}
+                                    className={"w-full h-full object-contain m-auto"}/>
+                            </Card>
+                        </Carousel.Slide>
+                    )}
 
                 </Carousel>
-                <Space h={20} />
+                <Space h={20}/>
             </div>
         </div>
     )

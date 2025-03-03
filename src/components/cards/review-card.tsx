@@ -2,7 +2,7 @@ import {Avatar, Card, Image, Space, Text, Title} from "@mantine/core";
 
 
 interface props {
-    review: ReviewObj
+    review: TestimonialObj
 }
 
 export default function ReviewCard({review}: props) {
@@ -21,7 +21,7 @@ export default function ReviewCard({review}: props) {
                 <Title order={4}>{review.name}</Title>
                 <Text className={"italic"}>{review.position}</Text>
                 <Space h={10}/>
-                <Text>{review.review}</Text>
+                <Text>{review.testimonial}</Text>
             </div>
         </div>
     )

@@ -9,14 +9,14 @@ interface props extends ButtonProps {
     icon?: IconType;
 }
 
-export default function ContactLink({href, label, contact, ...rest}: props) {
-
+export default function ContactLink({href, label, contact, icon, ...rest}: props) {
+    const Icon = icon ? icon : undefined
     return (
         <a href={href}>
             <Button
                 {...rest}
                 variant={'transparent'}
-                leftSection={rest.icon ? <rest.icon className={"text-primary"}/> : undefined}
+                leftSection={Icon && <Icon className={"text-primary"}/>}
             >
                 {label} {contact}
             </Button>

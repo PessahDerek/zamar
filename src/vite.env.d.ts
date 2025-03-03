@@ -5,33 +5,61 @@ declare interface CategoryObj {
 }
 
 declare interface ValueObj {
-    id: number;
+    id: string;
     title: string;
-    text: string;
-    icon: string;
+    description: string;
+    icon?: string;
 }
 
 declare interface ServicesObj {
-    id: number;
+    id: string;
     image: string;
-    service: string;
-    description: string;
+    title: string;
+    content: string;
+    collectionId: string
+    collectionName: string;
 }
 
-declare interface ReviewObj {
-    id: number;
+declare interface TestimonialObj {
+    id: string;
     name: string;
     position: string;
-    review: string;
+    testimonial: string;
     avi?: string;
+}
+
+declare interface ShowcaseObj {
+    collectionId: string;
+    collectionName: string;
+    created: string;
+    id: string;
+    image: string;
+}
+
+declare interface RawClientObj {
+    id: string;
+    collectionId: string;
+    collectionName: String;
+    field: string[];
+}
+
+declare interface ClientObj {
+    id: string;
+    genId: string;
+    collectionId: string;
+    collectionName: String;
+    image: string;
 }
 
 declare interface LeaderObj {
-    id: number;
-    name: string;
+    id: string;
+    photo?: string;
+    created: string;
     position: string;
-    description: string;
-    avi?: string;
+    member_name: string;
+    member_story: string;
+    collectionId: string;
+    collectionName: string;
 }
 
 declare interface ProjectGroupObj {

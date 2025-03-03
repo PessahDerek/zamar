@@ -1,21 +1,23 @@
 import {IconType} from "react-icons";
-import {Card, Flex, Text, Title} from "@mantine/core";
+import {Flex, Title} from "@mantine/core";
 import {BiSolidBinoculars} from "react-icons/bi";
 import {FaHandHoldingHeart} from "react-icons/fa6";
 import {TbTargetArrow} from "react-icons/tb";
 import {useState} from "react";
+import DOMPurify from "dompurify";
 
 
 interface props {
     value: ValueObj
 }
 
-export default function ValueCard({value: {title, text, icon}}: props) {
+export default function ValueCard({value: {title, description}}: props) {
     const Icon: IconType = title.toLowerCase().includes('vision')
         ? BiSolidBinoculars :
         title.toLowerCase().includes("mis") ? TbTargetArrow : FaHandHoldingHeart
 
     const [hover, setHover] = useState(false);
+    const display = DOMPurify.sanitize(description)
 
     return (
         <Flex onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
@@ -27,9 +29,7 @@ export default function ValueCard({value: {title, text, icon}}: props) {
             </div>
             <div className={"flex-1 m-auto"}>
                 <Title order={4}>{title}</Title>
-                {text.split("\n").map((line, i) =>
-                    <Text key={i}>{line}</Text>
-                )}
+                <div dangerouslySetInnerHTML={{__html: display}}></div>
             </div>
         </Flex>
     )

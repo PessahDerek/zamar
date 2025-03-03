@@ -1,11 +1,22 @@
-import {createFileRoute} from '@tanstack/react-router'
+import {createFileRoute, useLoaderData} from '@tanstack/react-router'
 import {Image, SimpleGrid, Space, Text, Title} from "@mantine/core";
 import {useStore} from "zustand/react";
 import DynamicContentStore from "../libs/content/dynamic.content";
 import ManagerCard from "../components/cards/ManagerCard";
+import pb from "../libs/instances/pocketbase";
+import {useEffect} from "react";
 
 export const Route = createFileRoute('/about')({
     component: RouteComponent,
+    staleTime: 8.64e+7,
+    loader: async () => {
+        const leaders = (await pb.collection("Team").getList()).items as unknown as LeaderObj[]
+
+        return {leaders}
+    },
+    onCatch: err => {
+        return []
+    }
 })
 
 function ShowTitle({title}: { title: string }) {
@@ -19,7 +30,16 @@ function ShowTitle({title}: { title: string }) {
 }
 
 function RouteComponent() {
-    const {leaders} = useStore(DynamicContentStore)
+    const {leaders} = useLoaderData({from: "/about"})
+    const data = useStore(DynamicContentStore);
+
+    useEffect(() => {
+        if (Array.isArray(leaders)) {
+            data.fill("leaders", leaders)
+        }
+    }, [])
+
+
     return (
         <div className={"w-full py-5"}>
             <div className={"w-[95%] m-auto gap-5 md:columns-2"}>

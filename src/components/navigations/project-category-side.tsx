@@ -53,7 +53,7 @@ export default function ProjectCategorySide() {
         )
     ]
     return (
-        <SimpleGrid className={"w-[200px] h-[95%] hidden md:block rounded-lg text-white p-5 bg-primary-700"}>
+        <SimpleGrid className={"w-[200px] h-full sticky top-[75px] hidden md:block rounded-lg text-white p-5 bg-primary-700"}>
             <SimpleGrid verticalSpacing={'sm'} className={"w-full h-max"}>
                 <Title order={3}>Categories</Title>
                 {/*<Space h={0}/>*/}

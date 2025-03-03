@@ -1,4 +1,6 @@
-import {Image, Text, Title} from "@mantine/core";
+import {Avatar, Text, Title} from "@mantine/core";
+import DOMPurify from "dompurify";
+import pb from "../../libs/instances/pocketbase";
 
 
 interface props {
@@ -7,19 +9,22 @@ interface props {
 
 export default function ManagerCard({leader}: props) {
 
+    const story = DOMPurify().sanitize(leader.member_story)
+
     return (
-        <div className={"columns-2 bg-white break-inside-avoid-column p-4"}>
-            <div className={"w-[150px] h-full col-span-1 text-primary break-inside-avoid-column"}>
-                <Image
-                    src={leader.avi}
-                    alt={`Photo of ${leader.name}}`}
-                    className={"w-full h-[150px] object-contain object-center"}
-                />
-                <Title order={5}>{leader.name}</Title>
+        <div className={"md:columns-2 bg-white p-4"}>
+            <div className={"w-[150px] h-max text-primary break-inside-avoid-column"}>
+                <Avatar
+                    src={`${pb.baseURL}/api/files/${leader.collectionId}/${leader.id}/${leader.photo}`}
+                    className={"w-full h-[150px]"}
+                    >
+                    <Text className={"font-bold"}>{leader.member_name.split(" ").reduce((acc, curr)=>` ${acc}${curr.at(0)}`, "")}</Text>
+                </Avatar>
+                <Title order={5}>{leader.member_name}</Title>
                 <Text className={"italic"}>{leader.position}</Text>
             </div>
-            <div className={"flex-1 col-span-2"}>
-                <Text>{leader.description}</Text>
+            <div className={"flex-1"}>
+                <div dangerouslySetInnerHTML={{__html: story}}></div>
             </div>
         </div>
     )
