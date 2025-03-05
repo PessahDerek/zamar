@@ -1,22 +1,23 @@
 import {createFileRoute, useLoaderData} from '@tanstack/react-router'
-import {Image, SimpleGrid, Space, Text, Title} from "@mantine/core";
+import {Image, Space, Text, Title} from "@mantine/core";
 import {useStore} from "zustand/react";
 import DynamicContentStore from "../libs/content/dynamic.content";
 import ManagerCard from "../components/cards/ManagerCard";
 import pb from "../libs/instances/pocketbase";
 import {useEffect} from "react";
+import PendingScreen from "../components/ui/PendingScreen";
+import ErrorScreen from "../components/ui/ErrorScreen";
 
 export const Route = createFileRoute('/about')({
     component: RouteComponent,
     staleTime: 8.64e+7,
+    wrapInSuspense: true,
+    errorComponent: ErrorScreen,
+    pendingComponent: PendingScreen,
     loader: async () => {
         const leaders = (await pb.collection("Team").getList()).items as unknown as LeaderObj[]
-
         return {leaders}
     },
-    onCatch: err => {
-        return []
-    }
 })
 
 function ShowTitle({title}: { title: string }) {

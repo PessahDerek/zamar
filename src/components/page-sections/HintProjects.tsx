@@ -14,10 +14,11 @@ export default function HintProjects() {
                 <div className={"w-[95%] m-auto text-primary-700 mt-0 font-bold"}>
                     <h3 className={"font-black text-[15vmin] break-all "}>
                         Undeniable quality</h3>
-                    <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi euismod tortor ac lectus congue
-                        pharetra. Fusce at tincidunt ligula. Aenean mauris orci, sagittis sed lectus vitae, aliquet
-                        tincidunt magna. Donec ex lorem, molestie volutpat dolor quis, malesuada fringilla dui. Nulla
-                        facilisi</Text>
+                    <Text>
+                        Every project we undertake is a fusion of creativity, strategy, and precision. From eye-catching
+                        visuals to compelling campaigns, our work speaks for itself. Explore our portfolio and see how
+                        we’ve helped brands make a lasting impact.
+                    </Text>
                     <Space h={20}/>
                     <Link to={"/projects"} search={{category: "all"}}>
                         <Button rightSection={<BsArrowRight/>} color={'accent'} variant={'filled'}>

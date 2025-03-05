@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import {RouterProvider, createRouter} from '@tanstack/react-router'
+import {createRouter, RouterProvider} from '@tanstack/react-router'
 import {routeTree} from './routeTree.gen'
 
 // core styles are required for all packages
@@ -9,14 +9,13 @@ import '@mantine/carousel/styles.css'
 // other css files are required only if
 // you are using components from the corresponding package
 import '@mantine/dates/styles.css';
+import '@mantine/notifications/styles.css'
 // import '@mantine/dropzone/styles.css';
 // import '@mantine/code-highlight/styles.css';
-
 import "./main.css"
 import {MantineProvider} from "@mantine/core";
 import {Notifications} from "@mantine/notifications";
 import {appMantineTheme} from "./libs/theme/appMantineTheme";
-import {DatesProvider} from "@mantine/dates";
 
 // Set up a Router instance
 const router = createRouter({

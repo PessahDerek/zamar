@@ -12,16 +12,17 @@ import HintProjects from "../components/page-sections/HintProjects";
 import SendEmailMessage from "../components/forms/SendEmailMessage";
 import ContactLink from "../components/buttons/ContactLink";
 import {BsInstagram, BsPhone, BsTwitterX, BsWhatsapp} from "react-icons/bs";
+import ErrorScreen from "../components/ui/ErrorScreen";
 
 export const Route = createFileRoute('/')({
     component: HomeComponent,
+    errorComponent: ErrorScreen,
 })
 
 function HomeComponent() {
     const {values, services, testimonials} = useStore(DynamicContentStore)
 
 
-    console.log([...services.values()])
     return (
         <div className="w-full">
             <Landing/>
@@ -44,16 +45,17 @@ function HomeComponent() {
             <div className={"w-[95%] grid gap-4 m-auto"}>
                 <Title order={2} className={"font-black text-primary-700 text-5xl"}>What our clients say</Title>
                 <Carousel
+                    className={"w-full max-w-[95vw] overflow-hidden"}
                     classNames={{
                         indicator: "bg-accent", container: " pb-10",
                         indicators: " h-2 bottom-0"
                     }} withIndicators={true}
                     align={'start'}
-                    slideSize={{md: "35%"}} slideGap={10}
+                    slideSize={{md: "33%"}} slideGap={10}
                 >
                     {
                         [...testimonials.values()].map(review =>
-                            <Carousel.Slide key={review.id}>
+                            <Carousel.Slide className={"w-full"} key={review.id}>
                                 <ReviewCard review={review}/>
                             </Carousel.Slide>)
                     }
@@ -68,8 +70,8 @@ function HomeComponent() {
             <div className={"w-[95%] grid gap-4 m-auto"}>
                 <Title order={4} className={"font-black text-primary-700 text-5xl"}>Reach us</Title>
                 <div className={"flex flex-wrap gap-4"}>
-                    <SendEmailMessage className={'max-w-1/2 flex-1'}/>
-                    <div className={"grid auto-rows-max gap-3 bg-white p-4 rounded-md"}>
+                    <SendEmailMessage className={'md:max-w-1/2 flex-1'}/>
+                    <div className={"grid h-max sm:grid-cols-1 md:grid-cols-2 auto-rows-max gap-3 bg-white p-4 rounded-md"}>
                         <ContactLink color={'green'} contact={"0741120439"} label={"Whatsapp"} href={""}
                                      icon={BsWhatsapp}/>
                         <ContactLink color={'blue'} contact={"0741120439"} label={"Phone"} href={""} icon={BsPhone}/>

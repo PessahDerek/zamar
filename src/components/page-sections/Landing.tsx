@@ -37,7 +37,12 @@ export default function Landing() {
                     <div className={"grid gap-2 mt-auto mb-10 w-3/4"}>
                         <Title className={"font-black"} size={"4rem"}
                                order={1}>{texts.get("landing_title") ?? ""}</Title>
-                        <Text>fadf</Text>
+                        <Text>
+                            From bold outdoor billboards to sleek indoor displays, striking vehicle branding to
+                            unforgettable activation campaigns, and powerful digital strategies—we bring your brand to
+                            life. Whether on the streets or on screens, we ensure your message stands out, resonates,
+                            and delivers results. Let’s craft something extraordinary together.
+                        </Text>
                         <Link to={"/quote"}>
                             <Button variant={'gradient'}>
                                 Get free quote

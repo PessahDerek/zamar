@@ -7,11 +7,14 @@ import DynamicContentStore from "../libs/content/dynamic.content";
 import {fakeLeaders} from "../libs/fake/data.fake";
 import Footer from "../components/ui/Footer";
 import pb from "../libs/instances/pocketbase";
+import PendingScreen from "../components/ui/PendingScreen";
 
 export const Route = createRootRoute({
     component: RootComponent,
     preload: true,
-
+    wrapInSuspense: true,
+    shouldReload: false,
+    pendingComponent: PendingScreen,
     loader: async () => {
         const showcase = (await pb.collection("Showcase").getList()).items as unknown as ShowcaseObj[]
         const values = (await pb.collection("values").getList()).items as unknown as ValueObj[]

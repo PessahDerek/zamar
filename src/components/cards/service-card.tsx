@@ -1,7 +1,7 @@
 import {Button, Card, Image, Text, Title} from "@mantine/core";
 import {useState} from "react";
-import {staticContent} from "../../libs/content/static.content";
 import pb from "../../libs/instances/pocketbase";
+import {useNavigate} from "@tanstack/react-router";
 
 interface props {
     service: ServicesObj
@@ -9,11 +9,12 @@ interface props {
 
 export default function ServiceCard({service}: props) {
     const [active, setActive] = useState(false);
+    const navigate = useNavigate();
 
     const handleClick = () => {
         if (active)
             // navigate
-            return
+            return navigate({to: "/quote"})
         setActive(true);
     }
     return (

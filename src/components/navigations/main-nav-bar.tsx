@@ -30,17 +30,19 @@ export default function MainNavBar() {
                         <Menu.Target>
                             <Burger opened={dropped}/>
                         </Menu.Target>
-                        <Menu.Divider/>
                         <Menu.Dropdown className={"min-w-[200px]"}>
-                            <Menu.Item>
+                            <Menu.Item className={"p-4"}>
                                 <Link to={"/"}>Home</Link>
                             </Menu.Item>
-                            <Menu.Item>
+                            <Menu.Divider/>
+                            <Menu.Item className={"p-4"}>
                                 <Link to={"/about"}>About</Link>
                             </Menu.Item>
-                            <Menu.Item>
+                            <Menu.Divider/>
+                            <Menu.Item className={"p-4"}>
                                 <Link to={"/projects"} search={{category: "all"}}>Projects</Link>
                             </Menu.Item>
+                            <Menu.Divider/>
                             <Menu.Item>
                                 <Link to={"/quote"}>
                                     <Button className={'w-full'} variant={'gradient'}>

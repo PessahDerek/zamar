@@ -3,17 +3,28 @@ import ProjectCategorySide from "../components/navigations/project-category-side
 import {useMemo} from "react";
 import {Image, Text, Title} from "@mantine/core";
 import pb from "../libs/instances/pocketbase";
+import PendingScreen from "../components/ui/PendingScreen";
+import ErrorScreen from "../components/ui/ErrorScreen";
 
 export const Route = createFileRoute('/projects')({
     component: RouteComponent,
     shouldReload: false,
-    loader: async (): Promise<ProjectObj[]> => {
-        try {
-            return (await pb.collection("Projects").getList()).items as unknown as ProjectObj[]
-        } catch (e) {
-            return []
-        }
-    },
+    wrapInSuspense: true,
+    pendingComponent: PendingScreen,
+    errorComponent: ErrorScreen,
+    loader: (): Promise<ProjectObj[]> => new Promise((resolve, reject) => {
+        pb.collection("Projects").getList()
+            .then(res => resolve(res.items as unknown as ProjectObj[]))
+            .catch(err => reject(err));
+    }),
+    // loader: async (): Promise<ProjectObj[]> => {
+    //     try {
+    //         // return (await pb.collection("Projects").getList()).items as unknown as ProjectObj[]
+    //         return Promise.resolve(await pb.collection("Projects").getList()).items as unknown as ProjectObj[])
+    //     } catch (e) {
+    //         return []
+    //     }
+    // },
     validateSearch: (search: Record<string, string | undefined>) => {
         // validate and parse the search params into a typed state
         return {
@@ -33,9 +44,9 @@ function RouteComponent() {
     }, [category, data])
 
     return (
-        <div className={"flex flex-wrap min-h-[calc(100vh-70px)] gap-4 w-[95%]  m-auto"}>
+        <div className={"grid auto-rows-max md:flex flex-wrap min-h-[calc(100vh-70px)] gap-4 w-[95%]  m-auto"}>
             <ProjectCategorySide/>
-            <div className={"flex-1 p-4 md:overflow-y-auto grid gap-4"}>
+            <div className={"flex-1 md:p-4 md:overflow-y-auto grid gap-4"}>
                 {list.length < 1 && <Text className={"m-auto text-xl"}>
                     Nothing to show in this category, we're working to show you more soon😊
                 </Text>}
