@@ -8,6 +8,7 @@ import {fakeLeaders} from "../libs/fake/data.fake";
 import Footer from "../components/ui/Footer";
 import pb from "../libs/instances/pocketbase";
 import PendingScreen from "../components/ui/PendingScreen";
+import Client from "pocketbase";
 
 export const Route = createRootRoute({
     component: RootComponent,
@@ -18,26 +19,27 @@ export const Route = createRootRoute({
     loader: async () => {
         const showcase = (await pb.collection("Showcase").getList()).items as unknown as ShowcaseObj[]
         const values = (await pb.collection("values").getList()).items as unknown as ValueObj[]
-        const services = (await pb.collection("services").getList()).items as unknown as ServicesObj[]
+        const services = (await pb.collection("services").getList(0, 50, {expand: "sub_categories"})).items as unknown as ServicesObj[]
         const testimonials = (await pb.collection("Testimonials").getList()).items as unknown as TestimonialObj[]
-        const clients = (await pb.collection('Clients').getList()).items as unknown as RawClientObj[]
+        const subs = (await pb.collection("Subcategory").getList()).items as unknown as SubCategoryObj[]
+        const clients = (await pb.collection('Clients').getList()).items as unknown as ClientObj[]
         const leaders = fakeLeaders
-        return Promise.resolve({showcase, clients, values, services, testimonials, leaders})
+        return Promise.resolve({showcase, clients, subs, values, services, testimonials, leaders})
     }
 })
 
 function RootComponent() {
-    const {showcase, clients, values, services, testimonials, leaders} = useLoaderData({from: "__root__"})
+    const {showcase, subs, clients, values, services, testimonials, leaders} = useLoaderData({from: "__root__"})
     const {fill} = useStore(DynamicContentStore)
 
     useEffect(() => {
         if (Array.isArray(values)) {
             fill("values", values.sort((a, b) => b.description.length - a.description.length))
         }
-        console.log("Services: ", services)
-        if (Array.isArray(services)) {
+        if (Array.isArray(services))
             fill("services", services)
-        }
+        if (Array.isArray(subs))
+            fill("subs", subs)
         if (Array.isArray(testimonials))
             fill("testimonials", testimonials)
         if (Array.isArray(leaders))
@@ -46,12 +48,7 @@ function RootComponent() {
             fill("showcase", showcase)
         if (Array.isArray(clients))
             // !important modified the incoming ID to genId to be able to have different ID since they are kept in a map
-            fill("clients", clients.flatMap(c => c.field.map(f => ({
-                ...c,
-                image: f,
-                id: (c.id + Math.random() * 100),
-                genId: c.id
-            }))))
+            fill("clients", clients)
     }, []);
 
 

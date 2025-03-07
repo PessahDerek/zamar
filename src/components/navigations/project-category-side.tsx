@@ -1,88 +1,84 @@
-import {Button, Menu, Select, SimpleGrid, Title} from "@mantine/core";
-import {Link, useSearch} from "@tanstack/react-router";
-import Label = Menu.Label;
+import {Button, Title} from "@mantine/core";
+import {Link, useNavigate, useSearch} from "@tanstack/react-router";
+import {BiMinus, BiPlus} from "react-icons/bi";
+import {useCallback, useMemo} from "react";
+import {useStore} from "zustand/react";
+import DynamicContentStore from "../../libs/content/dynamic.content";
 
 
 export default function ProjectCategorySide() {
     // const categories = useStore(DynamicContentStore, state => state.categories);
-    const {category} = useSearch({from: "/projects"})
-    const links = [
-        (
-            <Link to={"/projects"} search={{category: "all"}}>
-                {({isActive}) =>
-                    <Button variant={isActive ? "filled" : "outline"} color={isActive ? "primary" : "white"}
-                            className={"w-full"}>
-                        All projects
-                    </Button>}
-            </Link>
-        ),
-        (
-            <Link to={"/projects"} search={{category: "activation"}}>
-                {({isActive}) =>
-                    <Button variant={isActive ? "filled" : "outline"} color={isActive ? "primary" : "white"}
-                            className={"w-full"}>
-                        Activation
-                    </Button>}
-            </Link>
-        ),
-        (
-            <Link to={"/projects"} search={{category: "branding"}}>
-                {({isActive}) =>
-                    <Button variant={isActive ? "filled" : "outline"} color={isActive ? "primary" : "white"}
-                            className={"w-full"}>
-                        Branding
-                    </Button>}
-            </Link>
-        ),
-        (
-            <Link to={"/projects"} search={{category: "digital-marketing"}}>
-                {({isActive}) =>
-                    <Button variant={isActive ? "filled" : "outline"} color={isActive ? "primary" : "white"}
-                            className={"w-full"}>
-                        Digital marketing
-                    </Button>}
-            </Link>
-        ),
-        (
-            <Link to={"/projects"} search={{category: "indoor-outdoor-branding"}}>
-                {({isActive}) =>
-                    <Button variant={isActive ? "filled" : "outline"} color={isActive ? "primary" : "white"}
-                            className={"w-full"}>
-                        Indoor & outdoor branding
-                    </Button>}
+    const {category, sub} = useSearch({from: "/projects"})
+    const {services, subs} = useStore(DynamicContentStore)
+    const navigate = useNavigate();
+    const imOpen = useCallback((cat: string, sub_cat?: string) => {
+        const one = category?.toLowerCase() == cat.toLowerCase();
+        const two = sub_cat ? sub_cat.toLowerCase() == sub : one
+        return one && two
+    }, [category, sub])
 
-            </Link>
-        )
-    ]
-    return (
-        <>
-            <SimpleGrid
-                className={"w-[200px] h-full sticky top-[75px] hidden md:block rounded-lg text-white p-5 bg-primary-700"}>
-                <SimpleGrid verticalSpacing={'sm'} className={"w-full h-max"}>
-                    <Title order={3}>Categories</Title>
-                    {/*<Space h={0}/>*/}
-                    {...links}
-                </SimpleGrid>
-            </SimpleGrid>
-            <div className={"w-full h-max grid auto-rows-max gap-2 bg-primary-800 text-white rounded-lg sticky top-[75px] z-30 p-2"}>
-                <Title order={4}>Select category</Title>
-                <div className={"flex gap-2 overflow-x-auto"}>
-                    {...links}
+    const navs = useMemo(() => {
+        const computed = [
+            ...services.values()].map(service => (
+            <div className={"grid gap-2 transition-all duration-300 h-max"} key={service.id}>
+                <Button
+                    onClick={
+                        () => {
+                            if (imOpen(service.title))
+                                return navigate({to: "/projects", search: {category: "all", sub: undefined}})
+                            navigate({to: "/projects", search: {category: service.title, sub: undefined}}).catch(() => {
+                            })
+                        }
+                    }
+                    className={"w-full"} variant={imOpen(service.title) ? "filled" : "outline"}
+                    rightSection={service.sub_categories.length > 0 ? imOpen(service.title) ?
+                        <BiMinus/> : <BiPlus/> : undefined}>
+                    {service.title}
+                </Button>
+
+                <div
+                    className={`w-full transition-all duration-300 overflow-y-hidden ${imOpen(service.title) ? "h-max" : "h-0"} grid gap-2 pl-5`}>
+                    {service.sub_categories.map(sub_cat => {
+                        const sub = subs.get(sub_cat)
+                        if (!sub)
+                            return <></>
+                        return (
+                            <Link key={sub_cat} to={"/projects"}
+                                  search={{category: service.title.toLowerCase(), sub: sub.subcategory.toLowerCase()}}
+                                  activeOptions={{includeSearch: true, exact: false, explicitUndefined: false}}>
+                                {({isActive}) =>
+                                    <Button
+                                        color={'black'} variant={isActive ? "light" : "transparent"}
+                                        className={"w-full"}
+                                    >
+                                        {sub.subcategory}
+                                    </Button>}
+                            </Link>
+                        )
+                    })}
                 </div>
-                {/*<Menu>*/}
-                {/*    <Menu.Target>*/}
-                {/*        <Button >{category}</Button>*/}
-                {/*    </Menu.Target>*/}
-                {/*    <Menu.Dropdown className={"min-w-[300px] grid"}>*/}
-                {/*        <Menu.Item className={""}>*/}
-                {/*            <Link to={"/projects"} search={{category: "all"}}>*/}
-                {/*                <Button className={"w-full"}>All</Button>*/}
-                {/*            </Link>*/}
-                {/*        </Menu.Item>*/}
-                {/*    </Menu.Dropdown>*/}
-                {/*</Menu>*/}
             </div>
-        </>
+        ))
+        return [
+            (
+                <Link to={"/projects"} search={{category: "all", sub: undefined}}>
+                    {({isActive}) =>
+                        <Button variant={isActive ? "filled" : "outline"} className={"w-full"}>All</Button>}
+                </Link>
+            ),
+        ].concat(computed)
+    }, [services, subs, navigate, imOpen])
+
+    return (
+        <div
+            className={"min-w-[200px] bg-white w-full md:w-max h-full md:sticky md:top-[75px] rounded-lg p-5 "}>
+            <div className={"w-full h-max grid gap-2 transition-all duration-300"}>
+                <Title order={3}>Categories</Title>
+                <div className={'grid gap-2 w-full'}>
+                    {...navs}
+                </div>
+            </div>
+        </div>
     )
 }
 

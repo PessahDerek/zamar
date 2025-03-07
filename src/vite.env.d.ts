@@ -18,6 +18,7 @@ declare interface ServicesObj {
     content: string;
     collectionId: string
     collectionName: string;
+    sub_categories: string[]
 }
 
 declare interface TestimonialObj {
@@ -40,15 +41,17 @@ declare interface RawClientObj {
     id: string;
     collectionId: string;
     collectionName: String;
-    field: string[];
+    name: string;
+    logo: string;
 }
 
 declare interface ClientObj {
     id: string;
-    genId: string;
+    // genId: string;
     collectionId: string;
     collectionName: String;
-    image: string;
+    name: string;
+    logo: string;
 }
 
 declare interface LeaderObj {
@@ -76,15 +79,19 @@ declare interface ProjectGroupObj {
 
 // Define the project type
 declare interface ProjectObj {
-    caption: string;
     category: string;
+    subcategory: string;
+    id: string;
+    images: string[];
+    client: string;
+    expand: { client: ClientObj, category: ServicesObj },
     collectionId: string;
     collectionName: string;
     created: string;
+}
+declare interface SubCategoryObj {
+    subcategory: string;
     id: string;
-    images: string[];
-    title: string;
-    updated: string;
 }
 
 // If you're using this as part of a response type from an API

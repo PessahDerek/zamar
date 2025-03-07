@@ -60,11 +60,11 @@ export default function Landing() {
                     withIndicators={false}
                     className={"w-full"}
                 >
-                    {[...clients.values()].map((v, i) =>
-                        <Carousel.Slide key={i} className={""}>
+                    {[...clients.values()].map(v =>
+                        <Carousel.Slide key={v.id} className={""}>
                             <Card color={'white'} className={"w-full h-[15vh]"}>
                                 <Image
-                                    src={`${pb.baseURL}/api/files/${v.collectionId}/${v.genId}/${v.image}`}
+                                    src={`${pb.baseURL}/api/files/${v.collectionId}/${v.id}/${v.logo}`}
                                     className={"w-full h-full object-contain m-auto"}/>
                             </Card>
                         </Carousel.Slide>

@@ -2,6 +2,7 @@ import {createStore} from "zustand/vanilla";
 
 export type DynamicContentFields =
     "clients"
+    | "subs"
     | "categories"
     | "showcase"
     | "values"
@@ -18,6 +19,7 @@ export type DynamicContDataObj =
     | ServicesObj
     | TestimonialObj
     | LeaderObj
+    | SubCategoryObj
 
 interface DynamicContentObj {
     categories: CategoryDataObj;
@@ -28,6 +30,7 @@ interface DynamicContentObj {
     testimonials: Map<string, TestimonialObj>
     leaders: Map<string, LeaderObj>
     clients: Map<string, ClientObj>
+    subs: Map<string, SubCategoryObj>
 
     fill(field: DynamicContentFields, data: DynamicContDataObj[]): void;
 }
@@ -37,6 +40,7 @@ const DynamicContentStore = createStore<DynamicContentObj>()((set, _get) => ({
     values: new Map(),
     clients: new Map(),
     showcase: new Map(),
+    subs: new Map(),
     texts: new Map().set("landing_title", "Building Brands"),
     services: new Map(),
     testimonials: new Map(),

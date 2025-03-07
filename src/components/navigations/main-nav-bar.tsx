@@ -31,8 +31,12 @@ export default function MainNavBar() {
                             <Burger opened={dropped}/>
                         </Menu.Target>
                         <Menu.Dropdown className={"min-w-[200px]"}>
+                            <Button>
+                                test me
+                            </Button>
                             <Menu.Item className={"p-4"}>
-                                <Link to={"/"}>Home</Link>
+                                <Link to={"/"}>
+                                    <Button>Home</Button></Link>
                             </Menu.Item>
                             <Menu.Divider/>
                             <Menu.Item className={"p-4"}>
