@@ -41,9 +41,10 @@ export default function ProjectCategorySide() {
                     {service.sub_categories.map(sub_cat => {
                         const sub = subs.get(sub_cat)
                         if (!sub)
-                            return <></>
+                            return <div key={sub_cat}></div>
                         return (
-                            <Link key={sub_cat} to={"/projects"}
+                            // <Link key={sub_cat} to={"/projects"}
+                            <Link key={sub.subcategory} to={"/projects"}
                                   search={{category: service.title.toLowerCase(), sub: sub.subcategory.toLowerCase()}}
                                   activeOptions={{includeSearch: true, exact: false, explicitUndefined: false}}>
                                 {({isActive}) =>
@@ -61,7 +62,7 @@ export default function ProjectCategorySide() {
         ))
         return [
             (
-                <Link to={"/projects"} search={{category: "all", sub: undefined}}>
+                <Link key={"default"} to={"/projects"} search={{category: "all", sub: undefined}}>
                     {({isActive}) =>
                         <Button variant={isActive ? "filled" : "outline"} className={"w-full"}>All</Button>}
                 </Link>

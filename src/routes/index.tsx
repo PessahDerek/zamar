@@ -1,5 +1,6 @@
 import * as React from 'react'
-import {createFileRoute, Link} from '@tanstack/react-router'
+import {useEffect} from 'react'
+import {createFileRoute, Link, useLoaderData} from '@tanstack/react-router'
 import Landing from "../components/page-sections/Landing";
 import {useStore} from "zustand/react";
 import DynamicContentStore from "../libs/content/dynamic.content";
@@ -13,15 +14,43 @@ import SendEmailMessage from "../components/forms/SendEmailMessage";
 import ContactLink from "../components/buttons/ContactLink";
 import {BsInstagram, BsPhone, BsTwitterX, BsWhatsapp} from "react-icons/bs";
 import ErrorScreen from "../components/ui/ErrorScreen";
+import pb from "../libs/instances/pocketbase";
+import PendingScreen from "../components/ui/PendingScreen";
 
 export const Route = createFileRoute('/')({
     component: HomeComponent,
+    pendingComponent: PendingScreen,
     errorComponent: ErrorScreen,
+    loader: async () => {
+        const showcase = (await pb.collection("Showcase").getList()).items as unknown as ShowcaseObj[]
+        const values = (await pb.collection("values").getList()).items as unknown as ValueObj[]
+        const services = (await pb.collection("services").getList(0, 50, {expand: "sub_categories"})).items as unknown as ServicesObj[]
+        const testimonials = (await pb.collection("Testimonials").getList()).items as unknown as TestimonialObj[]
+        // const subs = (await pb.collection("Subcategory").getList()).items as unknown as SubCategoryObj[]
+        const clients = (await pb.collection('Clients').getList()).items as unknown as ClientObj[]
+        // const leaders = fakeLeaders
+        return Promise.resolve({showcase, clients, values, services, testimonials})
+    }
 })
 
 function HomeComponent() {
-    const {values, services, testimonials} = useStore(DynamicContentStore)
+    const store = useStore(DynamicContentStore)
+    const {values, services, testimonials, clients, showcase} = useLoaderData({from: "/"})
 
+    useEffect(() => {
+        if (Array.isArray(values)) {
+            store.fill("values", values.sort((a, b) => b.description.length - a.description.length))
+        }
+        if (Array.isArray(services))
+            store.fill("services", services)
+        if (Array.isArray(testimonials))
+            store.fill("testimonials", testimonials)
+        if (Array.isArray(showcase))
+            store.fill("showcase", showcase)
+        if (Array.isArray(clients))
+            // !important modified the incoming ID to genId to be able to have different ID since they are kept in a map
+            store.fill("clients", clients)
+    }, []);
 
     return (
         <div className="w-full">
@@ -30,14 +59,14 @@ function HomeComponent() {
             <div className={"w-[95%] grid gap-4 m-auto"}>
                 <Title order={2} className={"font-black text-primary-700 text-5xl"}>At our core</Title>
                 <Flex wrap={'wrap'} gap={2}>
-                    {[...values.values()].map(value => <ValueCard value={value} key={value.id}/>)}
+                    {[...store.values.values()].map(value => <ValueCard value={value} key={value.id}/>)}
                 </Flex>
             </div>
             <Space h={40}/>
             <div className={"w-[95%] h-max grid auto-rows-max gap-4 m-auto"}>
                 <Title order={2} className={"font-black text-primary-700 text-5xl"}>Our services</Title>
                 <div className={"w-full flex gap-2 flex-wrap"}>
-                    {[...services.values()].map(service =>
+                    {[...store.services.values()].map(service =>
                         <ServiceCard service={service} key={service.id}/>)}
                 </div>
             </div>
@@ -54,7 +83,7 @@ function HomeComponent() {
                     slideSize={{md: "33%"}} slideGap={10}
                 >
                     {
-                        [...testimonials.values()].map(review =>
+                        [...store.testimonials.values()].map(review =>
                             <Carousel.Slide className={"w-full"} key={review.id}>
                                 <ReviewCard review={review}/>
                             </Carousel.Slide>)
@@ -71,7 +100,8 @@ function HomeComponent() {
                 <Title order={4} className={"font-black text-primary-700 text-5xl"}>Reach us</Title>
                 <div className={"flex flex-wrap gap-4"}>
                     <SendEmailMessage className={'md:max-w-1/2 flex-1'}/>
-                    <div className={"grid h-max sm:grid-cols-1 md:grid-cols-2 auto-rows-max gap-3 bg-white p-4 rounded-md"}>
+                    <div
+                        className={"grid h-max sm:grid-cols-1 md:grid-cols-2 auto-rows-max gap-3 bg-white p-4 rounded-md"}>
                         <ContactLink color={'green'} contact={"0741120439"} label={"Whatsapp"} href={""}
                                      icon={BsWhatsapp}/>
                         <ContactLink color={'blue'} contact={"0741120439"} label={"Phone"} href={""} icon={BsPhone}/>

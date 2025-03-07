@@ -31,20 +31,22 @@ export default function MainNavBar() {
                             <Burger opened={dropped}/>
                         </Menu.Target>
                         <Menu.Dropdown className={"min-w-[200px]"}>
-                            <Button>
-                                test me
-                            </Button>
                             <Menu.Item className={"p-4"}>
                                 <Link to={"/"}>
-                                    <Button>Home</Button></Link>
+                                    <Button variant={'transparent'} className={"w-full !h-max"}>Home</Button>
+                                </Link>
                             </Menu.Item>
                             <Menu.Divider/>
-                            <Menu.Item className={"p-4"}>
-                                <Link to={"/about"}>About</Link>
+                            <Menu.Item className={""}>
+                                <Link to={"/about"}>
+                                    <Button variant={'transparent'} className={"w-full"}>About</Button>
+                                </Link>
                             </Menu.Item>
                             <Menu.Divider/>
-                            <Menu.Item className={"p-4"}>
-                                <Link to={"/projects"} search={{category: "all"}}>Projects</Link>
+                            <Menu.Item className={""}>
+                                <Link to={"/projects"} search={{category: "all", sub: "all"}}>
+                                    <Button variant={'transparent'} className={"w-full"}>Projects</Button>
+                                </Link>
                             </Menu.Item>
                             <Menu.Divider/>
                             <Menu.Item>

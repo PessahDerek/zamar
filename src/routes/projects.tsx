@@ -1,25 +1,26 @@
 import {createFileRoute, useLoaderData, useSearch} from '@tanstack/react-router'
 import ProjectCategorySide from "../components/navigations/project-category-side";
-import {useMemo} from "react";
+import {useEffect, useMemo} from "react";
 import {Image, Text, Title} from "@mantine/core";
 import pb from "../libs/instances/pocketbase";
-import PendingScreen from "../components/ui/PendingScreen";
 import ErrorScreen from "../components/ui/ErrorScreen";
 import {useStore} from "zustand/react";
 import DynamicContentStore from "../libs/content/dynamic.content";
+import ProjectLoading from "../components/ui/ProjectLoading";
 
 
 export const Route = createFileRoute('/projects')({
     component: RouteComponent,
     shouldReload: false,
     wrapInSuspense: true,
-    pendingComponent: PendingScreen,
+    pendingComponent: ProjectLoading,
     errorComponent: ErrorScreen,
-    loader: (): Promise<ProjectObj[]> => new Promise((resolve, reject) => {
-        pb.collection("Projects").getList(undefined, undefined, {expand: "client,category"})
-            .then(res => resolve(res.items as unknown as ProjectObj[]))
-            .catch(err => reject(err));
-    }),
+    loader: async () => {
+        const subcategories = (await pb.collection("Subcategory").getList()).items as unknown as SubCategoryObj[]
+        const services = (await pb.collection("services").getList(0, 50, {expand: "sub_categories"})).items as unknown as ServicesObj[]
+        const projects = (await pb.collection("Projects").getList(undefined, undefined, {expand: "client,category,subcategory"})).items as unknown as ProjectObj[];
+        return {projects, subcategories, services};
+    },
     validateSearch: (search: Record<string, string | undefined>) => {
         // validate and parse the search params into a typed state
         return {
@@ -30,13 +31,13 @@ export const Route = createFileRoute('/projects')({
 })
 
 function RouteComponent() {
-    const data = useLoaderData({from: "/projects"})
+    const {projects, subcategories, services} = useLoaderData({from: "/projects"})
     const {category, sub} = useSearch({from: "/projects"})
-    const {services, subs} = useStore(DynamicContentStore)
+    const {subs, fill} = useStore(DynamicContentStore)
 
     const list = useMemo(() => {
-        if (!category || category === "all") return data
-        return data.filter(f => {
+        if (!category || category === "all") return projects
+        return projects.filter(f => {
                 return (f.expand.category.title.toLowerCase().includes(category.toLowerCase()))
             }
         )
@@ -46,11 +47,20 @@ function RouteComponent() {
                 if (!subCategory) return true
                 return subCategory.subcategory.toLowerCase() == sub.toLowerCase()
             })
-    }, [category, data, sub])
+    }, [category, sub, projects])
 
+    useEffect(() => {
+        console.log("XX: ", subcategories)
+        if (Array.isArray(projects))
+            fill("projects", projects)
+        if (Array.isArray(subcategories))
+            fill("subs", subcategories)
+        if (Array.isArray(services))
+            fill("services", services)
+    }, []);
 
     return (
-        <div className={"flex flex-wrap min-h-[calc(100vh-70px)] gap-4 w-[95%] m-auto"}>
+        <div className={"flex flex-wrap min-h-[calc(100vh-70px)] gap-4 w-[95%] h-full pb-5 m-auto"}>
             <ProjectCategorySide/>
             <div className={"flex-1 md:p-4 md:overflow-y-auto grid gap-4"}>
                 {list.length < 1 && <Text className={"m-auto text-xl"}>
