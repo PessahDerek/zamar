@@ -1,5 +1,5 @@
 import {Carousel} from "@mantine/carousel";
-import {Button, Card, Flex, Image, Space, Text, Title} from "@mantine/core";
+import {Button, Flex, Image, Space, Text, Title} from "@mantine/core";
 import {useStore} from "zustand/react";
 import DynamicContentStore from "../../libs/content/dynamic.content";
 import {Link} from "@tanstack/react-router";
@@ -50,30 +50,32 @@ export default function Landing() {
                         </Link>
                     </div>
                 </Flex>
-                <Carousel
-                    plugins={[autoplay2.current]}
-                    slidesToScroll={1}
-                    // h={'15vh'}
-                    slideGap={5}
-                    speed={50}
-                    loop={true} align={'start'}
-                    slideSize={{base: "15%", md: "15%"}} withControls={false}
-                    withIndicators={false}
-                    className={"w-full h-max "}
-                >
-                    {[...clients.values()].map(v =>
-                        <Carousel.Slide key={v.id} className={"w-full h-[15vh] bg-black"}>
-                            <div color={'white'} className={"w-full h-full text-primary-900 px-4 bg-white rounded-lg flex flex-col"}>
-                                <Title className={' truncate'} order={5}>{v.name}</Title>
-                                <Image
-                                    h={20}
-                                    src={`${pb.baseURL}/api/files/${v.collectionId}/${v.id}/${v.logo}`}
-                                    className={"w-full h-full object-contain flex-1 m-auto"}/>
-                            </div>
-                        </Carousel.Slide>
-                    )}
+                <div className={"grid gap-4"}>
+                    <Title className={"pl-7"} order={3}>Our clients</Title>
+                    <Carousel
+                        plugins={[autoplay2.current]}
+                        slidesToScroll={1}
+                        // h={'15vh'}
+                        slideGap={5}
+                        speed={50}
+                        loop={true} align={'start'}
+                        slideSize={{base: "15%", md: "15%"}} withControls={false}
+                        withIndicators={false}
+                        className={"w-full h-max "}
+                    >
+                        {[...clients.values()].map(v =>
+                            <Carousel.Slide key={v.id} className={"w-full h-[15vh] bg-black"}>
+                                <div color={'white'} className={"w-full h-full text-primary-900 px-4 bg-white rounded-lg flex flex-col"}>
+                                    <Image
+                                        h={20}
+                                        src={`${pb.baseURL}/api/files/${v.collectionId}/${v.id}/${v.logo}`}
+                                        className={"w-full h-full object-contain flex-1 m-auto"}/>
+                                </div>
+                            </Carousel.Slide>
+                        )}
 
-                </Carousel>
+                    </Carousel>
+                </div>
                 <Space h={20}/>
             </div>
         </div>
