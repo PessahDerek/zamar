@@ -53,20 +53,23 @@ export default function Landing() {
                 <Carousel
                     plugins={[autoplay2.current]}
                     slidesToScroll={1}
-                    h={'15vh'} slideGap={5}
+                    // h={'15vh'}
+                    slideGap={5}
                     speed={50}
                     loop={true} align={'start'}
-                    slideSize={{md: "10%", sm: "20%"}} withControls={false}
+                    slideSize={{md: "15%", sm: "10%"}} withControls={false}
                     withIndicators={false}
-                    className={"w-full"}
+                    className={"w-full h-max "}
                 >
                     {[...clients.values()].map(v =>
-                        <Carousel.Slide key={v.id} className={""}>
-                            <Card color={'white'} className={"w-full h-[15vh]"}>
+                        <Carousel.Slide key={v.id} className={"w-full h-[15vh] bg-black"}>
+                            <div color={'white'} className={"w-full h-full text-primary-900 px-4 bg-white rounded-lg flex flex-col"}>
+                                <Title className={' truncate'} order={5}>{v.name}</Title>
                                 <Image
+                                    h={20}
                                     src={`${pb.baseURL}/api/files/${v.collectionId}/${v.id}/${v.logo}`}
-                                    className={"w-full h-full object-contain m-auto"}/>
-                            </Card>
+                                    className={"w-full h-full object-contain flex-1 m-auto"}/>
+                            </div>
                         </Carousel.Slide>
                     )}
 
