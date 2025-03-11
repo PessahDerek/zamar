@@ -57,7 +57,7 @@ export default function Landing() {
                     slideGap={5}
                     speed={50}
                     loop={true} align={'start'}
-                    slideSize={{md: "15%", sm: "10%"}} withControls={false}
+                    slideSize={{base: "15%", md: "15%"}} withControls={false}
                     withIndicators={false}
                     className={"w-full h-max "}
                 >
