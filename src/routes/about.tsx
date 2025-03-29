@@ -44,7 +44,7 @@ function RouteComponent() {
     return (
         <div className={"w-full py-5"}>
             <div className={"w-[95%] m-auto gap-5 md:columns-2"}>
-                <Image className={"rounded-xl h-[40vh] md:h-full"} src={"/ui/zamargroup.jpeg"} alt={"zamar group"}/>
+                <Image className={"rounded-xl h-[40vh] md:h-full"} src={"/ui/"} alt={"zamar group"}/>
                 <ShowTitle title={"About us"}/>
                 <Space h={10} className={"hidden md:block"}/>
                 <Text>

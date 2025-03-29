@@ -13,10 +13,11 @@ export default function ManagerCard({leader}: props) {
 
     return (
         <div className={"md:columns-2 bg-white p-4"}>
-            <div className={"w-[150px] h-max text-primary break-inside-avoid-column"}>
+            <div className={"w-full h-max text-primary break-inside-avoid-column"}>
                 <Avatar
                     src={`${pb.baseURL}/api/files/${leader.collectionId}/${leader.id}/${leader.photo}`}
-                    className={"w-full h-[150px]"}
+                    className={"w-[30vh] h-[30vh]"}
+                    classNames={{image: "object-contain"}}
                     >
                     <Text className={"font-bold"}>{leader.member_name.split(" ").reduce((acc, curr)=>` ${acc}${curr.at(0)}`, "")}</Text>
                 </Avatar>

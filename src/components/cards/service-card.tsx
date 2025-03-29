@@ -28,7 +28,7 @@ export default function ServiceCard({service}: props) {
             />
             <div
                 className={`w-full grid gap-2 absolute bottom-0 p-4 ${active ? "text-white bg-gradient-to-t from-primary-800 via-primary to-primary/30 " : "bg-white"}`}>
-                <Title c={'primary.8'} order={3}>{service.title}</Title>
+                <Title c={active ? '': "primary.7"} order={3}>{service.title}</Title>
                 <Text className={`transition-all duration-300 ${active ? "h-max": "h-0 overflow-hidden"}`}>{service.content}</Text>
                 <Button color={active ? 'secondary' : 'primary'} className={'max-w-max'} onClick={handleClick}>
                     {active ? "Get quote" : "Learn more"}

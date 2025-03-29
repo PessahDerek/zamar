@@ -11,7 +11,12 @@ import pb from "../../libs/instances/pocketbase";
 export default function Landing() {
     const {texts, showcase, clients} = useStore(DynamicContentStore)
     const autoplay1 = useRef(Autoplay({delay: 7000}))
-    const autoplay2 = useRef(AutoScroll({}))
+    const autoplay2 = useRef(AutoScroll({
+        active: (() => {
+            const width = window.innerWidth
+            return width <= 300 && clients.size >= 4 || clients.size >= 10 && width > 300
+        })()
+    }))
 
 
     return (
@@ -59,13 +64,14 @@ export default function Landing() {
                         slideGap={5}
                         speed={50}
                         loop={true} align={'start'}
-                        slideSize={{base: "15%", md: "15%"}} withControls={false}
+                        slideSize={{base: "30%", md: "15%"}} withControls={false}
                         withIndicators={false}
-                        className={"w-full h-max "}
+                        className={"w-full h-max"}
                     >
                         {[...clients.values()].map(v =>
-                            <Carousel.Slide key={v.id} className={"w-full h-[15vh] bg-black"}>
-                                <div color={'white'} className={"w-full h-full text-primary-900 px-4 bg-white rounded-lg flex flex-col"}>
+                            <Carousel.Slide key={v.id} className={"w-full h-[15vh]"}>
+                                <div color={'white'}
+                                     className={"w-full h-full text-primary-900 px-4 bg-white rounded-lg flex flex-col"}>
                                     <Image
                                         h={20}
                                         src={`${pb.baseURL}/api/files/${v.collectionId}/${v.id}/${v.logo}`}

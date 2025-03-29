@@ -19,6 +19,7 @@ export default function MainNavBar() {
                     <NavBtn label={"Home"} to={"/"}/>
                     <NavBtn label={"About"} to={"/about"}/>
                     <NavBtn label={"Projects"} to={"/projects"} search={{category: "all"}}/>
+                    <NavBtn label={"Contacts"} to={"/"} hash={"contacts"}  />
                 </div>
                 <Link to={"/quote"} className={"mt-auto mb-auto h-max hidden md:block"}>
                     <Button variant={'gradient'}>

@@ -12,7 +12,7 @@ interface props extends ButtonProps {
 export default function ContactLink({href, label, contact, icon, ...rest}: props) {
     const Icon = icon ? icon : undefined
     return (
-        <a href={href}>
+        <a href={href} target={"_blank"}>
             <Button
                 {...rest}
                 variant={'transparent'}

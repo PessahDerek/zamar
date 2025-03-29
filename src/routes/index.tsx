@@ -12,7 +12,7 @@ import {Carousel} from "@mantine/carousel";
 import HintProjects from "../components/page-sections/HintProjects";
 import SendEmailMessage from "../components/forms/SendEmailMessage";
 import ContactLink from "../components/buttons/ContactLink";
-import {BsInstagram, BsPhone, BsTwitterX, BsWhatsapp} from "react-icons/bs";
+import {BsInstagram, BsLinkedin, BsPhone, BsTwitterX, BsWhatsapp} from "react-icons/bs";
 import ErrorScreen from "../components/ui/ErrorScreen";
 import pb from "../libs/instances/pocketbase";
 import PendingScreen from "../components/ui/PendingScreen";
@@ -30,7 +30,8 @@ export const Route = createFileRoute('/')({
         const clients = (await pb.collection('Clients').getList()).items as unknown as ClientObj[]
         // const leaders = fakeLeaders
         return Promise.resolve({showcase, clients, values, services, testimonials})
-    }
+    },
+    staleTime: 4.32e+7
 })
 
 function HomeComponent() {
@@ -96,7 +97,7 @@ function HomeComponent() {
             <Space h={40}/>
             <HintProjects/>
             <Space h={40}/>
-            <div className={"w-[95%] grid gap-4 m-auto"}>
+            <div id={"contacts"} className={"w-[95%] grid gap-4 m-auto"}>
                 <Title order={4} className={"font-black text-primary-700 text-5xl"}>Reach us</Title>
                 <div className={"flex flex-wrap gap-4"}>
                     <SendEmailMessage className={'md:max-w-1/2 flex-1'}/>
@@ -109,6 +110,10 @@ function HomeComponent() {
                                      icon={BsTwitterX}/>
                         <ContactLink color={'secondary'} contact={"@zamar_ltd"} label={"Instagram"} href={""}
                                      icon={BsInstagram}/>
+                        <ContactLink label={"LinkedIn"} contact={"Zamar Solutions Limited"}
+                                     href={"https://ke.linkedin.com/in/zamar-solutions-limited-025bbb34a"}
+                                     icon={BsLinkedin}
+                        />
                     </div>
                 </div>
             </div>
