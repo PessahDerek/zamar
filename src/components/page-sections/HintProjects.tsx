@@ -20,7 +20,7 @@ export default function HintProjects() {
                         we’ve helped brands make a lasting impact.
                     </Text>
                     <Space h={20}/>
-                    <Link to={"/projects"} search={{category: "all", sub: undefined}}>
+                    <Link to={"/projects"} search={{category: "all"}}>
                         <Button rightSection={<BsArrowRight/>} color={'accent'} variant={'filled'}>
                             See our projects
                         </Button>
