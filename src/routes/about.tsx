@@ -15,8 +15,12 @@ export const Route = createFileRoute('/about')({
     errorComponent: ErrorScreen,
     pendingComponent: PendingScreen,
     loader: async () => {
-        const leaders = (await pb.collection("Team").getList()).items as unknown as LeaderObj[]
-        return {leaders}
+        try {
+            const leaders = (await pb.collection("Team").getList()).items as unknown as LeaderObj[]
+            return {leaders}
+        } catch (err) {
+            return {}
+        }
     },
 })
 
@@ -67,7 +71,7 @@ function RouteComponent() {
                 <ShowTitle title={"The team"}/>
                 <Space h={20}/>
                 <div className={"grid md:grid-cols-2 gap-2 rounded-lg"}>
-                    {[...leaders.values()].map(leader =>
+                    {leaders && [...leaders.values()].map(leader =>
                         <ManagerCard leader={leader} key={leader.id}/>)}
                 </div>
             </div>

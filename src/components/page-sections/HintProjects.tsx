@@ -1,4 +1,4 @@
-import {Button, Image, Space, Text, Title} from "@mantine/core";
+import {Button, Image, Space, Text} from "@mantine/core";
 import {Link} from "@tanstack/react-router";
 import {BsArrowRight} from "react-icons/bs";
 
@@ -12,7 +12,7 @@ export default function HintProjects() {
                        src={"/ui/projects.png"} alt={"list of our projects"}/>
                 <div className={"w-full h-[90%] bg-gradient-to-b absolute from-bg via-bg"}/>
                 <div className={"w-[95%] m-auto text-primary-700 mt-0 font-bold"}>
-                    <h3 className={"font-black text-[15vmin] break-all "}>
+                    <h3 className={"font-black text-[15vmin] break-words "}>
                         Undeniable quality</h3>
                     <Text>
                         Every project we undertake is a fusion of creativity, strategy, and precision. From eye-catching
@@ -20,7 +20,7 @@ export default function HintProjects() {
                         we’ve helped brands make a lasting impact.
                     </Text>
                     <Space h={20}/>
-                    <Link to={"/projects"} search={{category: "all"}}>
+                    <Link to={"/projects"} search={{category: "all", sub: undefined}}>
                         <Button rightSection={<BsArrowRight/>} color={'accent'} variant={'filled'}>
                             See our projects
                         </Button>

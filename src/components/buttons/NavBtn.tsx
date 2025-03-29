@@ -21,8 +21,7 @@ export default function NavBtn({label, to, ...rest}: props) {
 
             }
         }}
-            // @ts-ignore
-              from={pathname} to={to} {...rest} className={""}
+             to={to} {...rest} className={""}
               activeOptions={{includeSearch: false, includeHash: true}}>
             {({isActive}) => {
                 return (

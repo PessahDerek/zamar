@@ -12,14 +12,18 @@ import ProjectLoading from "../components/ui/ProjectLoading";
 export const Route = createFileRoute('/projects')({
     component: RouteComponent,
     shouldReload: false,
-    wrapInSuspense: true,
+    // wrapInSuspense: true,
     pendingComponent: ProjectLoading,
     errorComponent: ErrorScreen,
     loader: async () => {
-        const subcategories = (await pb.collection("Subcategory").getList()).items as unknown as SubCategoryObj[]
-        const services = (await pb.collection("services").getList(0, 50, {expand: "sub_categories"})).items as unknown as ServicesObj[]
-        const projects = (await pb.collection("Projects").getList(undefined, undefined, {expand: "client,category,subcategory"})).items as unknown as ProjectObj[];
-        return {projects, subcategories, services};
+        try {
+            const subcategories = (await pb.collection("Subcategory").getList()).items as unknown as SubCategoryObj[]
+            const services = (await pb.collection("services").getList(0, 50, {expand: "sub_categories"})).items as unknown as ServicesObj[]
+            const projects = (await pb.collection("Projects").getList(undefined, undefined, {expand: "client,category,subcategory"})).items as unknown as ProjectObj[];
+            return {projects, subcategories, services};
+        } catch (err) {
+            return {}
+        }
     },
     validateSearch: (search: Record<string, string | undefined>) => {
         // validate and parse the search params into a typed state
@@ -36,6 +40,7 @@ function RouteComponent() {
     const {subs, fill} = useStore(DynamicContentStore)
 
     const list = useMemo(() => {
+        if (!projects) return []
         if (!category || category === "all") return projects
         return projects.filter(f => {
                 return (f.expand.category.title.toLowerCase().includes(category.toLowerCase()))
